@@ -1,6 +1,6 @@
+import scrapy
 import os
 import json
-import scrapy
 import datetime as dt
 import logging
 
@@ -8,10 +8,9 @@ search_term = 'data science'
 
 page_depth = 3
 
-project_path = os.path.join(os.sep, 'data', 'pnc', 'pl52590', 'projects',
-                           'job_scraper')
+project_path = os.path.join(os.sep, 'C:\\', 'work', 'ds_job_market')
 
-log_path = os.path.join(os.sep, project_path, 'job_crawler', 'logs')
+log_path = os.path.join(os.sep, project_path, 'logs')
 
 log_filename = 'indeed_crawl_log_{}'.format(
     dt.datetime.now().strftime('%Y.%m.%d_%H.%M.%S'))
@@ -21,21 +20,32 @@ logging.basicConfig(filename=os.path.join(
 
 logger = logging.getLogger('indeed_crawl_log')
 
-result_path = os.path.join(os.sep, project_path, 'job_crawler', 'results')
+result_path = os.path.join(os.sep, project_path, 'results')
 
 result_filename = 'indeed_crawl_results_{}.json'.format(
     dt.datetime.now().strftime('%Y.%m.%d_%H.%M.%S'))
 
-raw_html_path = os.path.join(os.sep, project_path, 'job_crawler', 'results', 
+raw_html_path = os.path.join(os.sep, project_path, 'results', 
     'raw_html', '{}'.format(dt.datetime.now().strftime('%Y.%m.%d_%H.%M.%S')))
 
 if not os.path.exists(raw_html_path):
     os.makedirs(raw_html_path)
 
-location_file = os.path.join(os.sep, project_path, 'job_crawler', 'locations.json')
+# location_file = os.path.join(os.sep, project_path, 'data_science_job_market', 'locations.json')
 
-with open(location_file) as location_json:
-    locations = json.load(location_json)
+# with open(location_file) as location_json:
+#     locations = json.load(location_json)
+
+locations = [
+	{
+	    'city': "Pittsburgh",
+	    'state': "PA"
+	},
+	{
+	    'city': "New York", 
+	    'state': "NY"
+	}
+]
 
 city_urls = []
 

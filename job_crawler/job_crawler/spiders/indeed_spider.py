@@ -2,17 +2,34 @@
 Indeed Job Crawler
 """
 
+import os
+from pathlib import Path
+import json
 import scrapy
+import random
 import datetime as dt
 
-search_term = 'data science'
-city = 'pittsburgh'
-state = 'pa'
+file_path = Path(os.path.dirname(os.path.realpath(__file__)))
+
+with open(file_path.parent.parent / 'cities.json') as f:
+    cities = json.load(f)
+
+search_term = 'data scientist'
+
+page_depth = 10
+
+urls = []
+
+for location in cities:
+    for page in range(0, page_depth, 1):
+        urls.append("https://www.indeed.com/jobs?q={}&l={}%2C%20{}&jt=fulltime&start={}0".format(
+            search_term, cities[location]['city'], cities[location]['state'], page))
 
 class IndeedSpider(scrapy.Spider):
     name = 'Indeed Creepy Crawler'
     allowed_domains = ['indeed.com']
-    start_urls = ["https://www.indeed.com/jobs?q={}&l={}%2C%20{}&jt=fulltime&start=0".format(search_term, city, state)]
+    start_urls = urls
+    download_delay = (random.randrange(1, 200) / 1000)
 
     def parse(self, response):
         for jk in response.xpath("//*[contains(@class, 'row  result')]/@data-jk").extract():
